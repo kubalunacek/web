@@ -155,6 +155,44 @@ class AutoCompleteManager {
       }
     }
 
+    // moje start
+    const CezCompleter = {
+        getCompletions(editor, session, pos, prefix, callback) {
+          const { commandFragment } = Helpers.getContext(editor, pos)
+          console.log(commandFragment)
+          console.log(Helpers.getCezMacros())
+          if (commandFragment) {
+            const refMatch = commandFragment.match(
+              /^\\([a-zA-Z])*/
+            )
+            if (refMatch) {
+              // eslint-disable-next-line no-unused-vars
+              const commandName = refMatch[1]
+              const result = []
+              if (commandName !== 'ref') {
+                // ref is in top 100 commands
+                result.push({
+                  caption: `\\${commandName}{}`,
+                  snippet: `\\${commandName}{}`,
+                  meta: 'cmd',
+                  score: 60
+                })
+              }
+              for (let label of Helpers.getCezMacros()) {
+                result.push({
+                  caption: `\\${commandName}{${label}}`,
+                  value: `\\${commandName}{${label}}`,
+                  meta: 'cmd',
+                  score: 50
+                })
+              }
+              callback(null, result)
+            }
+          }
+        }
+      }
+    // moje end
+
     const references = this.$scope.$root._references
     const ReferencesCompleter = {
       getCompletions(editor, session, pos, prefix, callback) {
@@ -205,7 +243,8 @@ class AutoCompleteManager {
       ReferencesCompleter,
       LabelsCompleter,
       GraphicsCompleter,
-      FilesCompleter
+      FilesCompleter,
+      CezCompleter
     ]
   }
 

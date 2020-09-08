@@ -228,7 +228,7 @@ module.exports = settings =
 
 	robotsNoindex: (process.env['ROBOTS_NOINDEX'] == "true") or false
 
-	maxEntitiesPerProject: 2000
+	maxEntitiesPerProject: 20000
 	
 	maxUploadSize: 50 * 1024 * 1024 # 50 MB
 
